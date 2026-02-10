@@ -253,6 +253,62 @@ def generate_index(topic_groups: list, output_dir: str, distro: str) -> None:
     index_path.parent.mkdir(parents=True, exist_ok=True)
     index_path.write_text("\n".join(lines) + "\n")
 
+    # Also generate index.html so GitHub Pages serves a landing page
+    # without requiring Jekyll (which times out on 2000+ files)
+    html_lines = []
+    for line in lines:
+        import html as html_mod
+        text = html_mod.escape(line)
+        # Convert markdown links: [text](url) → <a href="url">text</a>
+        text = re.sub(
+            r'\[([^\]]+)\]\(([^)]+)\)',
+            r'<a href="\2">\1</a>',
+            text,
+        )
+        if text.startswith("# "):
+            html_lines.append(f"<h1>{text[2:]}</h1>")
+        elif text.startswith("## "):
+            html_lines.append(f"<h2>{text[3:]}</h2>")
+        elif text.startswith("### "):
+            html_lines.append(f"<h3>{text[4:]}</h3>")
+        elif text.startswith("&gt;"):
+            html_lines.append(f"<blockquote>{text[4:].strip()}</blockquote>")
+        elif text.strip().startswith("- "):
+            indent_level = (len(text) - len(text.lstrip())) // 2
+            content = text.strip()[2:]
+            # Bold items (section headers in TOC)
+            content = re.sub(
+                r'\*\*([^*]+)\*\*',
+                r'<strong>\1</strong>',
+                content,
+            )
+            padding = indent_level * 20
+            html_lines.append(
+                f'<div style="padding-left:{padding}px">'
+                f'&bull; {content}</div>'
+            )
+        elif text.strip():
+            html_lines.append(f"<p>{text}</p>")
+
+    html_path = Path(output_dir) / "index.html"
+    html_path.write_text(
+        "<!DOCTYPE html>\n<html><head>\n"
+        '<meta charset="utf-8">\n'
+        "<title>OpenShift Container Platform Documentation</title>\n"
+        "<style>\n"
+        "  body { font-family: -apple-system, sans-serif; max-width: 900px;"
+        " margin: 40px auto; padding: 0 20px; line-height: 1.6; }\n"
+        "  a { color: #0366d6; text-decoration: none; }\n"
+        "  a:hover { text-decoration: underline; }\n"
+        "  blockquote { color: #586069; border-left: 3px solid #ddd;"
+        " padding-left: 12px; margin-left: 0; }\n"
+        "  h3 { margin-top: 24px; margin-bottom: 8px; }\n"
+        "</style>\n"
+        "</head><body>\n"
+        + "\n".join(html_lines)
+        + "\n</body></html>\n"
+    )
+
 
 def main():
     parser = argparse.ArgumentParser(
