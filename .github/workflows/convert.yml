@@ -1,0 +1,76 @@
+name: Convert OpenShift Docs to Markdown
+
+on:
+  schedule:
+    # Run every Monday at 6:00 AM UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch of openshift/openshift-docs to convert'
+        required: false
+        default: 'main'
+      distro:
+        description: 'Target distro'
+        required: false
+        default: 'openshift-enterprise'
+      topics:
+        description: 'Comma-separated topic dirs (empty = all)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Clone openshift-docs
+        run: |
+          git clone --depth 1 \
+            --branch ${{ github.event.inputs.branch || 'main' }} \
+            https://github.com/openshift/openshift-docs.git
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+
+      - name: Install asciidoctor
+        run: gem install asciidoctor
+
+      - name: Install pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run conversion
+        run: |
+          python convert.py \
+            --source-dir ./openshift-docs \
+            --output-dir ./docs \
+            --distro ${{ github.event.inputs.distro || 'openshift-enterprise' }} \
+            --branch ${{ github.event.inputs.branch || 'main' }} \
+            --topics "${{ github.event.inputs.topics || '' }}" \
+            --workers 4
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          commit_message: "docs: update from openshift-docs (${{ github.event.inputs.branch || 'main' }})"

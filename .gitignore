@@ -1,0 +1,6 @@
+docs/
+openshift-docs/
+*.xml
+__pycache__/
+*.pyc
+.venv/
