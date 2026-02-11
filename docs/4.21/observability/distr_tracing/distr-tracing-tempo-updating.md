@@ -1,0 +1,11 @@
+For version upgrades, the Tempo Operator uses the Operator Lifecycle Manager (OLM), which controls installation, upgrade, and role-based access control (RBAC) of Operators in a cluster.
+
+The OLM runs in the OpenShift Container Platform by default. The OLM queries for available Operators as well as upgrades for installed Operators.
+
+When the Tempo Operator is upgraded to the new version, it scans for running TempoStack instances that it manages and upgrades them to the version corresponding to the Operator’s new version.
+
+# Additional resources
+
+- [Operator Lifecycle Manager concepts and resources](../../operators/understanding/olm/olm-understanding-olm.xml#olm-understanding-olm)
+
+- [Updating installed Operators](../../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators)

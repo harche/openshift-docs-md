@@ -21,8 +21,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   convert:
@@ -92,9 +90,14 @@ jobs:
       - name: Generate top-level index
         run: python convert.py --output-dir ./docs --generate-top-index
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-          commit_message: "docs: update multi-version openshift-docs conversion"
+      - name: Commit docs to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "docs: update multi-version openshift-docs conversion"
+            git push
+          fi

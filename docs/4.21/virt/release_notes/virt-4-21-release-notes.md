@@ -1,0 +1,260 @@
+These release notes describe new features and enhancements, Technology Preview features, deprecated and removed features, fixed issues, and known issues for OpenShift Virtualization 4.21.
+
+# Supported guest operating systems
+
+To view the supported guest operating systems for OpenShift Virtualization, see [Certified Guest Operating Systems in Red Hat OpenStack Platform, Red Hat Virtualization, OpenShift Virtualization and Red Hat Enterprise Linux with KVM](https://access.redhat.com/articles/973163#ocpvirt).
+
+# Microsoft Windows SVVP certification
+
+OpenShift Virtualization is certified in Microsoft’s Windows Server Virtualization Validation Program (SVVP) to run Windows Server workloads.
+
+The SVVP certification applies to:
+
+- Red Hat Enterprise Linux CoreOS workers. In the Microsoft SVVP Catalog, they are named *Red Hat OpenShift Container Platform 4.20*.
+
+- Intel and AMD CPUs.
+
+# New features and enhancements
+
+IBM® Secure Execution for VMs on IBM Z® and IBM® LinuxONE is generally available
+IBM® Secure Execution for VMs on IBM Z® and IBM® LinuxONE is now generally available. This capability provides hardware based memory encryption that protects virtual machine workloads from access by the host or hypervisor environment. For more information, see [Configuring IBM® Secure Execution virtual machines on IBM Z® and IBM® LinuxONE](../../virt/creating_vm/virt-configuring-ibm-secure-execution-vms-ibm-z.xml#virt-configuring-ibm-secure-execution-vms-ibm-z).
+
+OpenShift Virtualization on IBM Cloud® bare-metal nodes is generally available
+Installing OpenShift Virtualization on IBM Cloud® bare-metal nodes is now generally available. This update provides the ability to install OpenShift Virtualization on IBM Cloud provisioned bare-metal nodes by using Assisted Installer.
+
+[CNV-27898](https://issues.redhat.com/browse/CNV-27898)
+
+<!-- -->
+
+Custom MAC pool range configuration
+With this update, cluster administrators can specify a custom MAC pool range for a OpenShift Virtualization environment, preventing potential MAC address conflicts with other virtualization solutions on the same network. This gives cluster administrators more control over network resources, ensuring greater network stability and resource management efficiency.
+
+[CNV-63212](https://issues.redhat.com/browse/CNV-63212)
+
+Import VMs into OpenShift Virtualization while maintaining their previously assigned IP and MAC addresses
+With this update, you can import VMs into OpenShift Virtualization, preserving their original IP and MAC addresses when connected to custom, primary layer 2 networks. This enhancement streamlines the import process, ensuring network consistency and a seamless transition of VMs, resulting in minimal disruption.
+
+[CNV-61227](https://issues.redhat.com/browse/CNV-61227)
+
+<!-- -->
+
+Migrate VM disks to different storage classes
+Previously, installation of Migration Toolkit for Containers (MTC) was required before migrating VM disks to different storage classes. This requirement no longer exists, as VM disk storage class migration is now native to OpenShift Virtualization.
+
+In addition, it is no longer a requirement that the VMs you select for each bulk migration be in the same namespace.
+
+[CNV-61829](https://issues.redhat.com/browse/CNV-61829)
+
+<!-- -->
+
+Defining `ClusterUserDefinedNetwork` resources with a localnet topology
+With this update, you can create and manage `ClusterUserDefinedNetwork` resources within the localnet topology, using the OpenShift Container Platform web console.
+
+[CNV-52160](https://issues.redhat.com/browse/CNV-52160)
+
+Enhancements for the virtual machines **Search** menu
+With this update, the search interface is enhanced, making it more noticeable and user-friendly. A prominent **Search** button and an advanced search option are introduced, allowing users to initiate a search with either the primary button or the **Enter** key. This streamlines the user experience and improves overall search functionality.
+
+[CNV-70130](https://issues.redhat.com/browse/CNV-70130)
+
+Search bar added to the **Settings** page
+With this update, a search bar is added to the **Virtualization** → **Settings** page of the OpenShift Container Platform web console. This allows users to easily search for different settings contained within the **Cluster**, **User**, or **Preview features** tabs.
+
+[CNV-69189](https://issues.redhat.com//browse/CNV-69189)
+
+`--preserve-session` flag introduced to prevent unintentional VNC disconnects
+An optional `--preserve-session` flag has been introduced for VMs. This flag prevents an existing VNC console connection from being disconnected if you attempt to start a new session.
+
+If you attempt to create a second connection to the VNC console by using the `virtctl` CLI when this flag is set, an error is displayed and the connection fails.
+
+If you attempt to create a second connection to the VNC console by using the web console, a warning is displayed, and you are prompted to disconnect the existing session before you create the new session.
+
+[CNV-66115](https://issues.redhat.com/browse/CNV-66115)
+
+Starting a virtual machine console from the tree-view
+You can now start a virtual machine (VM) console session by clicking on the name of the running VM in the navigation panel, and then selecting **Open Console**.
+
+[CNV-70942](https://issues.redhat.com/browse/CNV-70942)
+
+Define OVS bonding in the Node network configuration wizard
+You can now define an Open vSwitch (OVS) Source Load Balancing (SLB) bonding interface when creating a node network configuration policy in the OpenShift Container Platform web console. Use the **Uplink connection** tab in the Node network configuration wizard to configure bond network interfaces that provide access to the external physical network to multiple VMs across shared bonded links.
+
+For more information, see [Managing policy from the web console](../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#virt-node-network-config-console_k8s-nmstate-updating-node-network-config).
+
+[CNV-70202](https://issues.redhat.com/browse/CNV-70202)
+
+Viewing and changing the current memory overcommitment using the web console
+You can view and change the memory overcommitment of the cluster from the **Virtualization** page of the web console.
+
+[CNV-69276](https://issues.redhat.com/browse/CNV-69276)
+
+**Self validation** tab added to the **Checkups** page
+With this update, cluster administrators can run a self-validation checkup on an OpenShift Container Platform cluster from the **Self validation** tab in the **Virtualization** → **Checkups** page of the web console. Users can download detailed results from the checkup as a ZIP file. This feature enables cluster administrators to execute extensive test suites on their clusters, helping to identify and address potential issues in advanced features and configurations.
+
+[CNV-59284](https://issues.redhat.com/browse/CNV-59284)
+
+**LiveMigration** and **Take snapshot** actions added to the list of available bulk actions in the web console
+With this update, cluster administrators can perform the following additional bulk actions:
+
+- **LiveMigration** - live migration of multiple selected VMs to a different node.
+
+- **Take snapshot** - taking snapshots of multiple selected VMs.
+
+  [CNV-73239](https://issues.redhat.com/browse/CNV-73239)
+
+Web console **Reset** button now available
+With this update, VM owners can force reboot their VMs by clicking **Reset** in the web console. This reboot process preserves user-customized data, such as hot plugged storage, by preserving the pod that contains the VM. This enhancement provides a more efficient and user-friendly experience, as users no longer need to manually manage the reboot process or risk losing their customized data.
+
+[CNV-51003](https://issues.redhat.com/browse/CNV-51003)
+
+<!-- -->
+
+New alerts in the OpenShift Virtualization runbooks
+The following [alerts for the OpenShift Virtualization Operator](../../virt/monitoring/virt-runbooks.xml#virt-runbooks) are now included in the OpenShift Virtualization runbooks:
+
+- `DeprecatedMachineType`
+
+- `GuestFilesystemAlmostOutOfSpace`
+
+- `GuestVCPUQueueHighCritical`
+
+- `GuestVCPUQueueHighWarning`
+
+- `HCOGoldenImageWithNoArchitectureAnnotation`
+
+- `HCOGoldenImageWithNoSupportedArchitecture`
+
+- `HCOMultiArchGoldenImagesDisabled`
+
+- `HCOOperatorConditionsUnhealthy`
+
+- `HighNodeCPUFrequency`
+
+- `KubeVirtVMGuestMemoryAvailableLow`
+
+- `KubeVirtVMGuestMemoryPressure`
+
+- `PersistentVolumeFillingUp`
+
+- `VirtLauncherPodsStuckFailed`
+
+- `VirtualMachineInstanceHasEphemeralHotplugVolume`
+
+- `VirtualMachineStuckInUnhealthyState`
+
+- `VirtualMachineStuckOnNode`
+
+[CNV-69069](https://issues.redhat.com/browse/CNV-69069)
+
+# Deprecated features
+
+The `HotplugVolume` feature gate is deprecated
+The `HotplugVolume` feature gate, which allows you to add storage without restarting your VM, is deprecated and will be removed in a future release. This feature gate will be replaced by `DeclarativeHotplugVolumes`.
+
+> [!NOTE]
+> `DeclarativeHotplugVolumes` does not support hot plugging ephemeral volumes. Ephemeral volumes are hot plugged to a VMI and do not persist in the owner VM. Existing ephemeral volumes that are hot plugged are automatically detached after you switch to the `DeclarativeHotplugVolumes` feature gate.
+
+[CNV-73301](https://issues.redhat.com/browse/CNV-73301)
+
+# Removed features
+
+Removed features are no longer supported in OpenShift Virtualization.
+
+Legacy virtctl ssh target syntax removed
+With this release, support for the `virtctl ssh type/name[.namespace]` target syntax has been removed. You must specify the target by using an explicit resource type, such as `vmi/<name>` or `vm/<name>`. Scripts and automation that rely on the removed syntax must be updated.
+
+<!-- -->
+
+Support for `kubevirt-virtctl` RPM removed
+With this release, support for the RHEL 8 `kubevirt-virtctl` RPM is removed and no longer supported.
+
+# Technology Preview features
+
+Some features in this release are currently in Technology Preview. These experimental features are not intended for production use. Note the following scope of support on the Red Hat Customer Portal for these features:
+
+[Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview)
+
+Golden image support for heterogeneous clusters (Technology Preview)
+Golden image support is available for heterogeneous clusters, which enables you to create and use golden images for virtual machines in environments with differing node configurations. This capability is a Technology Preview feature.
+
+[CNV-62357](https://issues.redhat.com/browse/CNV-62357)
+
+<!-- -->
+
+Custom video device support in virtual machines (Technology Preview)
+You can now configure a custom video device type when creating a virtual machine. Configuring a custom device type overrides the default video configuration, and allows you to specify different video devices, based on your guest operating system requirements and performance needs. This capability is a Technology Preview feature.
+
+[CNV-71192](https://issues.redhat.com/browse/CNV-71192)
+
+# Known issues
+
+Some linked Jira tickets are accessible only with Red Hat credentials.
+
+VMs using the cnv-bridge CNI fail to live migrate after updates from 4.12
+When you update from OpenShift Container Platform 4.12 to a newer minor version, virtual machines that use the `cnv-bridge` Container Network Interface (CNI) fail to live migrate. As a consequence, live migration fails for affected VMs.
+
+To work around this problem, change the `spec.config.type` field in your `NetworkAttachmentDefinition` manifest from `cnv-bridge` to `bridge` before you perform the update. As a result, live migration succeeds for VMs that use the updated network attachment definitions.
+
+[Known issue when migrating VMs that use the cnv-bridge CNI](https://access.redhat.com/solutions/7069807)
+
+<!-- -->
+
+Red Hat OpenShift Service Mesh 3.1.1 and Istio 1.25 and later are incompatible with OpenShift Virtualization
+Red Hat OpenShift Service Mesh 3.1.1 and Istio versions 1.25 and later are incompatible with OpenShift Virtualization 4.21 because the `traffic.sidecar.istio.io/kubevirtInterfaces` annotation is deprecated. As a consequence, service mesh integration with OpenShift Virtualization can fail when you use these versions.
+
+To work around this problem, when you install Service Mesh for integration with OpenShift Virtualization, select Red Hat OpenShift Service Mesh version 3.0.4 and Istio 1.24.4 instead of the default versions that are displayed in the web console.
+
+[OSSM-10883](https://issues.redhat.com/browse/OSSM-10883)
+
+<!-- -->
+
+Node labels remain after uninstalling OpenShift Virtualization
+Uninstalling OpenShift Virtualization does not remove the `feature.node.kubevirt.io` node labels that OpenShift Virtualization creates. As a consequence, nodes can still appear as if they are configured for virtualization workloads.
+
+To work around this problem, manually remove the `feature.node.kubevirt.io` labels from affected nodes after you uninstall OpenShift Virtualization.
+
+[CNV-38543](https://issues.redhat.com/browse/CNV-38543)
+
+<!-- -->
+
+Live migration fails when VM names exceed 47 characters
+Live migration fails if a virtual machine name exceeds 47 characters. As a consequence, you cannot live migrate VMs with longer names.
+
+To work around this problem, use VM names that are 47 characters or fewer when you create VMs that you plan to live migrate.
+
+[CNV-61066](https://issues.redhat.com/browse/CNV-61066)
+
+<!-- -->
+
+Service account volume becomes invalid after VM migration
+OpenShift Virtualization links a service account token in use by a pod to that specific pod by creating a disk image that contains the token. If you migrate a VM, the service account volume becomes invalid for the migrated VM. As a consequence, workloads that rely on that service account token can fail after migration.
+
+To work around this problem, use user accounts instead of service accounts, because user account tokens are not bound to a specific pod.
+
+[CNV-33835](https://issues.redhat.com/browse/CNV-33835)
+
+Upgrading to OpenShift Virtualization 4.21 when using wasp-agent
+If you are upgrading OpenShift Virtualization from version 4.20 to 4.21 and using `wasp-agent` to increase VM workload density, you must perform the following steps after you begin the upgrade:
+
+1.  Wait for the Machine Configuration Pool (MCP) to complete the updating of the infra nodes.
+
+2.  Edit the `KubeletConfig` file to remove the `failSwapOn: false` key-value pair.
+
+3.  Wait for the MCP to finish updating the worker nodes.
+
+[CNV-75837](https://issues.redhat.com/browse/CNV-75837)
+
+<!-- -->
+
+Duplicate boot sources created after enabling multi-architecture imports
+When you enable the `spec.featureGates.enableMultiArchBootImageImport` feature gate after boot sources have already been imported, OpenShift Virtualization recreates the boot source import resources using architecture-suffixed names, such as `fedora-amd64` or `fedora-arm64`.
+
+The original, non-suffixed boot source resources are not automatically removed and remain in the `openshift-virtualization-os-images` namespace. This results in duplicate boot sources appearing in the web console and CLI. These stale resources continue to consume storage space because the associated PVCs or `VolumeSnapshots` are retained.
+
+To work around this problem, manually delete the stale boot source resources:
+
+1.  Identify the currently active `DataSource` objects that resolve to the PVCs or `VolumeSnapshots` you want to keep.
+
+2.  Delete the older, non-suffixed `DataSource` objects and the PVCs or `VolumeSnapshots` they reference.
+
+    [CNV-75084](https://issues.redhat.com/browse/CNV-75084)

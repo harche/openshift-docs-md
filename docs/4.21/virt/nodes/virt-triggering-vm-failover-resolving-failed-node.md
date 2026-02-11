@@ -1,0 +1,85 @@
+If a node fails and [node health checks](https://access.redhat.com/articles/7057929) are not deployed on your cluster, virtual machines (VMs) with `runStrategy: Always` configured are not automatically relocated to healthy nodes.
+
+# Prerequisites
+
+- A node where a virtual machine was running has the `NotReady` [condition](../../nodes/nodes/nodes-nodes-viewing.xml#nodes-nodes-viewing-listing_nodes-nodes-viewing).
+
+- The virtual machine that was running on the failed node has `runStrategy` set to `Always`.
+
+- You have installed the OpenShift CLI (`oc`).
+
+# Deleting nodes from a bare metal cluster
+
+When you delete a node using the CLI, the node object is deleted in Kubernetes, but the pods that exist on the node are not deleted. Any bare pods not backed by a replication controller become inaccessible to OpenShift Container Platform. Pods backed by replication controllers are rescheduled to other available nodes. You must delete local manifest pods.
+
+<div class="formalpara">
+
+<div class="title">
+
+Procedure
+
+</div>
+
+Delete a node from an OpenShift Container Platform cluster running on bare metal by completing the following steps:
+
+</div>
+
+1.  Mark the node as unschedulable:
+
+    ``` terminal
+    $ oc adm cordon <node_name>
+    ```
+
+2.  Drain all pods on the node:
+
+    ``` terminal
+    $ oc adm drain <node_name> --force=true
+    ```
+
+    This step might fail if the node is offline or unresponsive. Even if the node does not respond, it might still be running a workload that writes to shared storage. To avoid data corruption, power down the physical hardware before you proceed.
+
+3.  Delete the node from the cluster:
+
+    ``` terminal
+    $ oc delete node <node_name>
+    ```
+
+    Although the node object is now deleted from the cluster, it can still rejoin the cluster after reboot or if the kubelet service is restarted. To permanently delete the node and all its data, you must [decommission the node](https://access.redhat.com/solutions/84663).
+
+4.  If you powered down the physical hardware, turn it back on so that the node can rejoin the cluster.
+
+# Verifying virtual machine failover
+
+After all resources are terminated on the unhealthy node, a new virtual machine instance (VMI) is automatically created on a healthy node for each relocated VM. To confirm that the VMI was created, view all VMIs by using the `oc` CLI.
+
+## Listing all virtual machine instances using the CLI
+
+You can list all virtual machine instances (VMIs) in your cluster, including standalone VMIs and those owned by virtual machines, by using the `oc` command-line interface (CLI).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You have installed the OpenShift CLI (`oc`).
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+- List all VMIs by running the following command:
+
+  ``` terminal
+  $ oc get vmis -A
+  ```
+
+</div>

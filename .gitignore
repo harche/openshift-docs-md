@@ -1,4 +1,3 @@
-docs/
 openshift-docs/
 *.xml
 __pycache__/

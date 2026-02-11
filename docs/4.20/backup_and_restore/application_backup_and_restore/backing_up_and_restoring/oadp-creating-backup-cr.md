@@ -1,0 +1,108 @@
+You back up Kubernetes resources, internal images, and persistent volumes (PVs) by creating a `Backup` custom resource (CR).
+
+<div>
+
+<div class="title">
+
+Prerequisites
+
+</div>
+
+- You must install the OpenShift API for Data Protection (OADP) Operator.
+
+- The `DataProtectionApplication` CR must be in a `Ready` state.
+
+- Backup location prerequisites:
+
+  - You must have S3 object storage configured for Velero.
+
+  - You must have a backup location configured in the `DataProtectionApplication` CR.
+
+- Snapshot location prerequisites:
+
+  - Your cloud provider must have a native snapshot API or support Container Storage Interface (CSI) snapshots.
+
+  - For CSI snapshots, you must create a `VolumeSnapshotClass` CR to register the CSI driver.
+
+  - You must have a volume location configured in the `DataProtectionApplication` CR.
+
+</div>
+
+<div>
+
+<div class="title">
+
+Procedure
+
+</div>
+
+1.  Retrieve the `backupStorageLocations` CRs by entering the following command:
+
+    ``` terminal
+    $ oc get backupstoragelocations.velero.io -n openshift-adp
+    ```
+
+    <div class="formalpara">
+
+    <div class="title">
+
+    Example output
+
+    </div>
+
+    ``` terminal
+    NAMESPACE       NAME              PHASE       LAST VALIDATED   AGE   DEFAULT
+    openshift-adp   velero-sample-1   Available   11s              31m
+    ```
+
+    </div>
+
+2.  Create a `Backup` CR, as in the following example:
+
+    ``` yaml
+    apiVersion: velero.io/v1
+    kind: Backup
+    metadata:
+      name: <backup>
+      labels:
+        velero.io/storage-location: default
+      namespace: openshift-adp
+    spec:
+      hooks: {}
+      includedNamespaces:
+      - <namespace>
+      includedResources: []
+      excludedResources: []
+      storageLocation: <velero-sample-1>
+      ttl: 720h0m0s
+      labelSelector:
+        matchLabels:
+          app: <label_1>
+          app: <label_2>
+          app: <label_3>
+      orLabelSelectors:
+      - matchLabels:
+          app: <label_1>
+          app: <label_2>
+          app: <label_3>
+    ```
+
+    - Specify an array of namespaces to back up.
+
+    - Optional: Specify an array of resources to include in the backup. Resources might be shortcuts (for example, 'po' for 'pods') or fully-qualified. If unspecified, all resources are included.
+
+    - Optional: Specify an array of resources to exclude from the backup. Resources might be shortcuts (for example, 'po' for 'pods') or fully-qualified.
+
+    - Specify the name of the `backupStorageLocations` CR.
+
+    - Map of {key,value} pairs of backup resources that have **all** the specified labels.
+
+    - Map of {key,value} pairs of backup resources that have **one or more** of the specified labels.
+
+3.  Verify that the status of the `Backup` CR is `Completed`:
+
+    ``` terminal
+    $ oc get backups.velero.io -n openshift-adp <backup> -o jsonpath='{.status.phase}'
+    ```
+
+</div>
